@@ -25,6 +25,15 @@
             </form>
         </div>
     </div>
+    <?php
+        function displayPicture($src){
+            echo "<div class='row pokeDetails align-items-center'>
+                   <div class='col-12 col-md-6 text-center'>
+                   <img src='{$src}' class='pokeImg' height='250'>
+                   </div> 
+                   </div>";
+        }
+    ?>
 </div>
 
 
@@ -41,8 +50,10 @@
 function getThePokemon(){
     $url = "https://pokeapi.co/api/v2/pokemon/".$_POST['pokeName'];
     $jasonFile = file_get_contents($url);
-    $obj = json_decode($jasonFile);
-    echo var_dump($obj.'<br>');
+    $obj = json_decode($jasonFile,true);
+    //var_dump($obj);
+    displayPicture($obj["sprites"]["other"]["home"]["front_default"]);
+    displayDetails($obj);
 }
 if (isset($_POST['submit'])){
     getThePokemon();
