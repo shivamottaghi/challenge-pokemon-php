@@ -26,11 +26,15 @@
         </div>
     </div>
     <?php
-        function displayPicture($src){
+        function displayPokemon($src , $name, $id){
             echo "<div class='row pokeDetails align-items-center'>
                    <div class='col-12 col-md-6 text-center'>
                    <img src='{$src}' class='pokeImg' height='250'>
                    </div> 
+                   <div class='row col-12 col-md-6 details text-center'>
+                    <h3>$name</h3>
+                    <h4>$id</h4>
+                   </div>
                    </div>";
         }
     ?>
@@ -52,8 +56,10 @@ function getThePokemon(){
     $jasonFile = file_get_contents($url);
     $obj = json_decode($jasonFile,true);
     //var_dump($obj);
-    displayPicture($obj["sprites"]["other"]["home"]["front_default"]);
-    displayDetails($obj);
+    $src = $obj["sprites"]["other"]["home"]["front_default"];
+    $name = $obj["name"];
+    $id = $obj["id"];
+    displayPokemon( $src, $name, $id);
 }
 if (isset($_POST['submit'])){
     getThePokemon();
