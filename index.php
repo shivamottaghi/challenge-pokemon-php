@@ -39,7 +39,10 @@
 
 <?php
 function getThePokemon(){
-    echo $_POST['pokeName'];
+    $url = "https://pokeapi.co/api/v2/pokemon/".$_POST['pokeName'];
+    $jasonFile = file_get_contents($url);
+    $obj = json_decode($jasonFile);
+    echo var_dump($obj.'<br>');
 }
 if (isset($_POST['submit'])){
     getThePokemon();
