@@ -10,17 +10,19 @@
 </head>
 <body>
 <div class="container">
-    <div class="row align-items-center">
+    <!--<div class="row align-items-center">
         <div class="col-12 text-center">
             <img src="images/banner.jpg" alt="" height="400" class="d-none d-md-inline">
         </div>
-    </div>
+    </div>-->
     <div class="row align-items-center" id="searchInputRow">
         <div class="col-12 col-md-4 offset-md-4 text-center" id="searchInputCol">
-            <label for="pokeName" id="searchLabel">Enter the Pokemon name or ID and press the search button</label>
-            <input type="text" name="pokeName" id="pokeName">
-            <br>
-            <button type="button" class="btn" id="searchBtn">Search</button>
+            <form action="index.php" method="post">
+                <label for="pokeName" id="searchLabel">Enter the Pokemon name or ID and press the search button</label>
+                <input type="text" name="pokeName" id="pokeName">
+                <br>
+                <button type="submit" class="btn" id="submit" name="submit">Search</button>
+            </form>
         </div>
     </div>
 </div>
@@ -36,7 +38,10 @@
 </html>
 
 <?php
-for ($x = 0 ; $x<10 ; $x++){
-    echo "the number is $x <br>";
+function getThePokemon(){
+    echo $_POST['pokeName'];
+}
+if (isset($_POST['submit'])){
+    getThePokemon();
 }
 ?>
