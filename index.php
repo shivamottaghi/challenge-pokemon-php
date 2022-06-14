@@ -27,7 +27,7 @@
     </div>
 </div>
 <?php
-function displayPokemon($src , $name, $id){
+function displayPokemon($src , $name, $id, $moves ){
     echo " <div class='container'>
                   <div class='row pokeDetails align-items-center'>
                    <div class='col-12 col-md-6 text-center'>
@@ -36,6 +36,10 @@ function displayPokemon($src , $name, $id){
                    <div class='row col-12 col-md-6 details text-center'>
                     <h3>$name</h3>
                     <h4>$id</h4>
+                    <p>$moves[0]</p>
+                    <p>$moves[1]</p>
+                    <p>$moves[2]</p>
+                    <p>$moves[3]</p>
                    </div>
                    </div>
            </div>";
@@ -65,8 +69,8 @@ function getThePokemon(){
     for ($x=0 ; $x <4 ; $x ++){
         array_push($movesArr , $obj["moves"][$x]["move"]["name"]);
     }
-    displayPokemon( $src, $name, $id);
-    print_r($movesArr);
+    displayPokemon( $src, $name, $id, $movesArr);
+   // print_r($movesArr);
 }
 if (isset($_POST['submit'])){
     getThePokemon();
