@@ -25,9 +25,11 @@
             </form>
         </div>
     </div>
-    <?php
-        function displayPokemon($src , $name, $id){
-            echo "<div class='row pokeDetails align-items-center'>
+</div>
+<?php
+function displayPokemon($src , $name, $id){
+    echo " <div class='container'>
+                  <div class='row pokeDetails align-items-center'>
                    <div class='col-12 col-md-6 text-center'>
                    <img src='{$src}' class='pokeImg' height='250'>
                    </div> 
@@ -35,10 +37,10 @@
                     <h3>$name</h3>
                     <h4>$id</h4>
                    </div>
-                   </div>";
-        }
-    ?>
-</div>
+                   </div>
+           </div>";
+}
+?>
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -59,7 +61,12 @@ function getThePokemon(){
     $src = $obj["sprites"]["other"]["home"]["front_default"];
     $name = $obj["name"];
     $id = $obj["id"];
+    $movesArr = [];
+    for ($x=0 ; $x <4 ; $x ++){
+        array_push($movesArr , $obj["moves"][$x]["move"]["name"]);
+    }
     displayPokemon( $src, $name, $id);
+    print_r($movesArr);
 }
 if (isset($_POST['submit'])){
     getThePokemon();
