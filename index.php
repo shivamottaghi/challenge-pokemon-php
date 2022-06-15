@@ -10,11 +10,6 @@
 </head>
 <body>
 <div class="container">
-    <!--<div class="row align-items-center">
-        <div class="col-12 text-center">
-            <img src="images/banner.jpg" alt="" height="400" class="d-none d-md-inline">
-        </div>
-    </div>-->
     <div class="row align-items-center" id="searchInputRow">
         <div class="col-12 col-md-4 offset-md-4 text-center" id="searchInputCol">
             <form action="index.php" method="post">
@@ -40,7 +35,7 @@ function displayPokemon($src , $name, $id, $moves ){
     echo " <div class='container'>";
     echo " <div class='row pokeDetails align-items-center'>";
     echo "<div class='col-12 col-md-6 text-center'>";
-    echo "<img src='{$src}' class='pokeImg' height='250'>";
+    echo "<img src='$src' class='pokeImg' height='250' alt='pokemon picture'>";
     echo "</div> ";
     echo "<div class='row col-12 col-md-6 details text-center'>";
     echo "<h3>$name</h3>";
@@ -55,8 +50,8 @@ function displayEvo($names , $images){
     echo "<div class='row pokeDetails'>";
     for ($x = 0 ; $x < count($names); $x++){
         echo "<div class='col-12 col-md-4 text-center'>";
-        echo "<h4>{$names[$x]}</h4>";
-        echo "<img src='{$images[$x]}' class='pokeImg' height='250'>";
+        echo "<h4>$names[$x]</h4>";
+        echo "<img src='$images[$x]' class='pokeImg' height='250' alt='pokemon picture'>";
         echo "</div>";
     }
     /// for row
@@ -101,7 +96,7 @@ function findEvo($chain){
    }
 }
 function pushImgSrc($arr , $poke){
-    array_push($arr , $poke["sprites"]["other"]["home"]["front_default"]);
+    array_push($arr , $poke["sprites"]["other"]["home"]["front_shiny"]);
     return $arr;
 }
 function pushName ($arr , $poke){
@@ -120,15 +115,27 @@ function getThePokemonInfo($obj){
     displayPokemon( $src, $name, $id, $movesArr);
 }
 function toGetFileFromApi ($url){
-    $jasonFile = file_get_contents($url);
-    $obj = json_decode($jasonFile,true);
-    return $obj;
+    $jasonFile = @file_get_contents($url);
+    if ($jasonFile === false){
+        echo "<h1>Something went wrong !!! Please try again</h1>";
+        return false;
+    }
+    else{
+        return json_decode($jasonFile,true);
+    }
+
 }
 if (isset($_POST['submit'])){
     $pokemon = toGetFileFromApi("https://pokeapi.co/api/v2/pokemon/".strtolower($_POST['pokeName']));
-    getThePokemonInfo($pokemon);
-    $species = toGetFileFromApi($pokemon["species"]["url"]);
-    $evoObj = toGetFileFromApi($species["evolution_chain"]["url"]);
-    findEvo($evoObj["chain"]);
+    if ($pokemon !== false){
+        getThePokemonInfo($pokemon);
+        $species = toGetFileFromApi($pokemon["species"]["url"]);
+        if ($species !== false){
+            $evoObj = toGetFileFromApi($species["evolution_chain"]["url"]);
+            if ($evoObj !== false){
+                findEvo($evoObj["chain"]);
+            }
+        }
+    }
 }
 ?>
