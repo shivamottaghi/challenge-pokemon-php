@@ -52,9 +52,8 @@ function displayPokemon($src , $name, $id, $moves ){
     echo "</div></div>";
 }
 function displayEvo($names , $images){
-    $count = count($names);
     echo "<div class='row pokeDetails'>";
-    for ($x = 0 ; $x < $count ; $x++){
+    for ($x = 0 ; $x < count($names); $x++){
         echo "<div class='col-12 col-md-4 text-center'>";
         echo "<h4>{$names[$x]}</h4>";
         echo "<img src='{$images[$x]}' class='pokeImg' height='250'>";
@@ -126,7 +125,7 @@ function toGetFileFromApi ($url){
     return $obj;
 }
 if (isset($_POST['submit'])){
-    $pokemon = toGetFileFromApi("https://pokeapi.co/api/v2/pokemon/".$_POST['pokeName']);
+    $pokemon = toGetFileFromApi("https://pokeapi.co/api/v2/pokemon/".strtolower($_POST['pokeName']));
     getThePokemonInfo($pokemon);
     $species = toGetFileFromApi($pokemon["species"]["url"]);
     $evoObj = toGetFileFromApi($species["evolution_chain"]["url"]);
