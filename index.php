@@ -51,18 +51,61 @@ function displayPokemon($src , $name, $id, $moves ){
                     <p>$moves[3]</p>
                    </div>
                    </div>
-           </div>";
+           ";
+}
+function displayEvo($names , $images){
+    $count = count($names);
+    echo "<div class='row pokeDetails'>";
+    for ($x = 0 ; $x < $count ; $x++){
+        echo "<div class='col-12 col-md-4 text-center'>";
+        echo "<h4>{$names[$x]}</h4>";
+        echo "<img src='{$images[$x]}' class='pokeImg' height='250'>";
+        echo "</div>";
+    }
+    /// for row
+    echo "</div>";
+    /// for container
+    echo "</div>";
+}
+function displayNoEvo(){
+    // for container
+    echo "</div>";
 }
 function findEvo($chain){
    $secondEvo = count($chain["evolves_to"]);
+   $evoImgArr = [];
+   $evoNameArr = [];
    if ($secondEvo == 0 ){
-       displayNoEvo();
+      displayNoEvo();
    }else{
+       $first = toGetFileFromApi("https://pokeapi.co/api/v2/pokemon/{$chain['species']['name']}");
+       $evoImgArr = pushImgSrc($evoImgArr , $first);
+       $evoNameArr = pushName($evoNameArr , $first);
        for ($x = 0 ; $x < $secondEvo; $x++){
-
+            $second = toGetFileFromApi("https://pokeapi.co/api/v2/pokemon/{$chain['evolves_to'][$x]['species']['name']}");
+            $evoImgArr = pushImgSrc($evoImgArr , $second);
+            $evoNameArr = pushName($evoNameArr, $second);
+            $thirdEvo = count($chain['evolves_to'][$x]['evolves_to']);
+            if ($thirdEvo != 0){
+                for ($y = 0 ; $y < $thirdEvo; $y ++){
+                    $third = toGetFileFromApi("https://pokeapi.co/api/v2/pokemon/{$chain['evolves_to'][$x]['evolves_to'][$y]['species']['name']}");
+                    $evoImgArr = pushImgSrc($evoImgArr , $third);
+                    $evoNameArr = pushName($evoNameArr, $third);
+                }
+            }
        }
+       displayEvo($evoNameArr,$evoImgArr);
    }
 }
+function pushImgSrc($arr , $poke){
+    array_push($arr , $poke["sprites"]["other"]["home"]["front_default"]);
+    return $arr;
+}
+function pushName ($arr , $poke){
+    array_push($arr, $poke["name"]);
+    return $arr;
+}
+
 function getThePokemonInfo($obj){
     $src = $obj["sprites"]["other"]["home"]["front_default"];
     $name = $obj["name"];
@@ -83,6 +126,6 @@ if (isset($_POST['submit'])){
     getThePokemonInfo($pokemon);
     $species = toGetFileFromApi($pokemon["species"]["url"]);
     $evoObj = toGetFileFromApi($species["evolution_chain"]["url"]);
-    //findEvo($evoObj["chain"]);
+    findEvo($evoObj["chain"]);
 }
 ?>
