@@ -37,21 +37,19 @@
 </html>
 <?php
 function displayPokemon($src , $name, $id, $moves ){
-    echo " <div class='container'>
-                  <div class='row pokeDetails align-items-center'>
-                   <div class='col-12 col-md-6 text-center'>
-                   <img src='{$src}' class='pokeImg' height='250'>
-                   </div> 
-                   <div class='row col-12 col-md-6 details text-center'>
-                    <h3>$name</h3>
-                    <h4>$id</h4>
-                    <p>$moves[0]</p>
-                    <p>$moves[1]</p>
-                    <p>$moves[2]</p>
-                    <p>$moves[3]</p>
-                   </div>
-                   </div>
-           ";
+    echo " <div class='container'>";
+    echo " <div class='row pokeDetails align-items-center'>";
+    echo "<div class='col-12 col-md-6 text-center'>";
+    echo "<img src='{$src}' class='pokeImg' height='250'>";
+    echo "</div> ";
+    echo "<div class='row col-12 col-md-6 details text-center'>";
+    echo "<h3>$name</h3>";
+    echo "<h4>$id</h4>";
+    for ($x = 0 ; $x < count($moves); $x ++){
+        echo "<p>$moves[$x]</p>";
+    }
+    // close row and col
+    echo "</div></div>";
 }
 function displayEvo($names , $images){
     $count = count($names);
@@ -68,6 +66,12 @@ function displayEvo($names , $images){
     echo "</div>";
 }
 function displayNoEvo(){
+
+    echo "<div class='row pokeDetails'>";
+    echo "<div class='col-12 col-md-4 text-center offset-md-4'>";
+    echo "<p>This pokemon has no evolutions!</p>";
+    //for row and col
+    echo "</div></div>";
     // for container
     echo "</div>";
 }
