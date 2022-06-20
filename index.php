@@ -38,8 +38,9 @@ function displayPokemon($src , $name, $id, $moves ){
     echo "<img src='$src' class='pokeImg' height='250' alt='pokemon picture'>";
     echo "</div> ";
     echo "<div class='row col-12 col-md-6 details text-center'>";
-    echo "<h3>$name</h3>";
-    echo "<h4>$id</h4>";
+    echo "<h3>Name: $name</h3>";
+    echo "<h4>Id: $id</h4>";
+    echo "<h4>Moves:</h4>";
     for ($x = 0 ; $x < count($moves); $x ++){
         echo "<p>$moves[$x]</p>";
     }
